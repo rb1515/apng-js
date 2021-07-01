@@ -6,7 +6,9 @@ import Player from './player';
  * @property {boolean} paused
  * @property {boolean} ended
  */
-export class APNG {
+import EventEmitter from 'events';
+
+export class APNG extends EventEmitter {
     /** @type {number} */
     width = 0;
     /** @type {number} */
@@ -23,7 +25,12 @@ export class APNG {
      * @return {Promise.<*>}
      */
     createImages() {
-        return Promise.all(this.frames.map(f => f.createImage()));
+        console.log("createImages");
+        return Promise.all(this.frames.map(f => f.createImage())).then(function(result){
+          console.log("promise end");
+          console.log(result);
+          this.emit('loaded');
+        });
     }
 
     /**

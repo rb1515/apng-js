@@ -462,9 +462,17 @@
 
 	var _player2 = _interopRequireDefault(_player);
 
+	var _events = __webpack_require__(5);
+
+	var _events2 = _interopRequireDefault(_events);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	/**
 	 * @property {number} currFrameNumber
@@ -472,15 +480,23 @@
 	 * @property {boolean} paused
 	 * @property {boolean} ended
 	 */
-	var APNG = exports.APNG = function () {
+
+
+	var APNG = exports.APNG = function (_EventEmitter) {
+	    _inherits(APNG, _EventEmitter);
+
 	    function APNG() {
+	        var _ref;
+
+	        var _temp, _this, _ret;
+
 	        _classCallCheck(this, APNG);
 
-	        this.width = 0;
-	        this.height = 0;
-	        this.numPlays = 0;
-	        this.playTime = 0;
-	        this.frames = [];
+	        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	            args[_key] = arguments[_key];
+	        }
+
+	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = APNG.__proto__ || Object.getPrototypeOf(APNG)).call.apply(_ref, [this].concat(args))), _this), _this.width = 0, _this.height = 0, _this.numPlays = 0, _this.playTime = 0, _this.frames = [], _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 	    /** @type {number} */
 
@@ -502,9 +518,14 @@
 	         * @return {Promise.<*>}
 	         */
 	        value: function createImages() {
+	            console.log("createImages");
 	            return Promise.all(this.frames.map(function (f) {
 	                return f.createImage();
-	            }));
+	            })).then(function (result) {
+	                console.log("promise end");
+	                console.log(result);
+	                this.emit('loaded');
+	            });
 	        }
 
 	        /**
@@ -517,18 +538,18 @@
 	    }, {
 	        key: 'getPlayer',
 	        value: function getPlayer(context) {
-	            var _this = this;
+	            var _this2 = this;
 
 	            var autoPlay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	            return this.createImages().then(function () {
-	                return new _player2.default(_this, context, autoPlay);
+	                return new _player2.default(_this2, context, autoPlay);
 	            });
 	        }
 	    }]);
 
 	    return APNG;
-	}();
+	}(_events2.default);
 
 	var Frame = exports.Frame = function () {
 	    function Frame() {
@@ -566,24 +587,24 @@
 	    _createClass(Frame, [{
 	        key: 'createImage',
 	        value: function createImage() {
-	            var _this2 = this;
+	            var _this3 = this;
 
 	            if (this.imageElement) {
 	                return Promise.resolve();
 	            }
 	            return new Promise(function (resolve, reject) {
-	                var url = URL.createObjectURL(_this2.imageData);
-	                _this2.imageElement = document.createElement('img');
-	                _this2.imageElement.onload = function () {
+	                var url = URL.createObjectURL(_this3.imageData);
+	                _this3.imageElement = document.createElement('img');
+	                _this3.imageElement.onload = function () {
 	                    URL.revokeObjectURL(url);
 	                    resolve();
 	                };
-	                _this2.imageElement.onerror = function () {
+	                _this3.imageElement.onerror = function () {
 	                    URL.revokeObjectURL(url);
-	                    _this2.imageElement = null;
+	                    _this3.imageElement = null;
 	                    reject(new Error("Image creation error"));
 	                };
-	                _this2.imageElement.src = url;
+	                _this3.imageElement.src = url;
 	            });
 	        }
 	    }]);
@@ -1134,7 +1155,7 @@
 
 
 	// module
-	exports.push([module.id, ".apng-info,\r\n.apng-frames {\r\n    max-height: 600px;\r\n    overflow:   auto;\r\n}\r\n\r\n.apng-frames > div {\r\n    float:            left;\r\n    margin:           1px 1px 8px 8px;\r\n    box-shadow:       0 0 0 1px;\r\n    position:         relative;\r\n    background:       linear-gradient(45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%),\r\n                      linear-gradient(-45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%);\r\n    background-color: #eee;\r\n    background-size:  20px 20px;\r\n}\r\n\r\n.apng-frames > div > img {\r\n    position:   absolute;\r\n    box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.75);\r\n}\r\n\r\n#playback-rate {\r\n    width:   12em;\r\n    display: inline-block;\r\n}\r\n\r\n.apng-log {\r\n    height: 10em;\r\n}", ""]);
+	exports.push([module.id, ".apng-info,\n.apng-frames {\n    max-height: 600px;\n    overflow:   auto;\n}\n\n.apng-frames > div {\n    float:            left;\n    margin:           1px 1px 8px 8px;\n    box-shadow:       0 0 0 1px;\n    position:         relative;\n    background:       linear-gradient(45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%),\n                      linear-gradient(-45deg, #fff 25%, transparent 26%, transparent 75%, #fff 76%);\n    background-color: #eee;\n    background-size:  20px 20px;\n}\n\n.apng-frames > div > img {\n    position:   absolute;\n    box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.75);\n}\n\n#playback-rate {\n    width:   12em;\n    display: inline-block;\n}\n\n.apng-log {\n    height: 10em;\n}", ""]);
 
 	// exports
 
