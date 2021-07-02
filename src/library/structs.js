@@ -26,12 +26,12 @@ export class APNG extends EventEmitter {
      */
     createImages() {
       var that = this;
-        console.log("createImages");
-        return Promise.all(this.frames.map(f => f.createImage())).then(function(result){
-          console.log("promise end");
-          console.log(result);
-          that.emit('loaded');
-        });
+      console.log("createImages");
+      return Promise.all(that.frames.map(f => f.createImage())).then(function(result){
+        console.log("promise end");
+        console.log(result);
+        that.emit('loaded');
+      });
     }
 
     /**
