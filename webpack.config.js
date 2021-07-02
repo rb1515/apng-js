@@ -2,6 +2,7 @@ var path = require('path')
 
 module.exports = [
   {
+    mode: 'production',
     entry: path.join(__dirname, 'src', 'library', 'parser.js'),
     output: {
       path: path.join(__dirname, 'lib'),
@@ -10,32 +11,33 @@ module.exports = [
       libraryTarget: 'umd'
     },
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.js$/,
           loader: 'babel-loader',
-          exclude: /[\\\/](node_modules|lib)[\\\/]/
+          exclude: /node_modules/,
         }
       ]
     }
   },
   {
+    mode: 'production',
     entry: path.join(__dirname, 'src', 'demo-page', 'index.js'),
     output: {
       path: path.join(__dirname, 'docs'),
       filename: 'index.js'
     },
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.js$/,
           loader: 'babel-loader',
-          exclude: /[\\\/](node_modules|lib)[\\\/]/
+          exclude: /node_modules/,
         },
         {
           test: /\.css$/,
           exclude: /[\\\/](node_modules|lib)[\\\/]/,
-          loader: 'style-loader!css-loader'
+          use: ['style-loader','css-loader']
         }
       ]
     }/*,
