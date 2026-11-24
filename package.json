@@ -6,9 +6,12 @@
   "repository": "rb1515/apng-js",
   "main": "lib/index.js",
   "types": "types/library/parser.d.ts",
+  "files": [
+    "lib/",
+    "types/"
+  ],
   "scripts": {
-    "build": "webpack",
-    "prepublish": "yarn build"
+    "build": "webpack"
   },
   "author": {
     "name": "David Mzareulyan",
@@ -16,16 +19,14 @@
     "url": "https://github.com/davidmz"
   },
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "@babel/preset-env": "^7.20.2",
     "babel-loader": "^9.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^6.7.2",
     "style-loader": "^3.3.1",
     "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0",
     "yarn": "^1.22.19"
-  },
-  "devDependencies": {
-    "webpack-cli": "^5.0.0"
   }
 }
